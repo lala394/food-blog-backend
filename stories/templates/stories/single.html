@@ -1,7 +1,12 @@
 {% extends 'base/index.html' %}
-{% load static %}
+{% load static base_filters %}
 {% block content %}
 
+<style>
+    html{
+        scroll-behavior: smooth !important;
+    }
+</style>
 
 <section class="hero-wrap hero-wrap-2" style="background-image: url('{{ recipe_data.image.url}}');">
     <div class="overlay"></div>
@@ -90,17 +95,36 @@
                 <div class="pt-5 mt-5">
                     <h3 class="mb-5">6 Comments</h3>
                     <ul class="comment-list">
-                        {% for comment in recipe_data.comments.all %}
+                        {% get_comments as comments %}
+                        
+                        {% for comment in comments %}
                         <li class="comment">
                             <div class="vcard bio">
                                 <img src="{%static 'images/person_1.jpg'%}" alt="Image placeholder">
                             </div>
                             <div class="comment-body">
                                 <h3>{{ comment.get_user_full_name }}</h3>
-                                <div class="meta">{{ comment.updated_at }}</div>
+                                <div class="meta">{{ comment.created_at|date:"F d, Y "}} at {{comment.created_at|date:"h:i a"}}</div>
                                 <p>{{ comment.comment }}</p>
-                                <p><a href="#" class="reply">Reply</a></p>
+                                <p><a href="#write-comment" comment-id="{{comment.id}}" class="reply">Reply</a></p>
                             </div>
+
+                            <ul class="children">
+                                {% for comment in comment.reply_comments.all %}
+                                    <li class="comment">
+                                        <div class="vcard bio">
+                                            <img src="{%static 'images/person_1.jpg'%}" alt="Image placeholder">
+                                        </div>
+                                        <div class="comment-body">
+                                            <h3>{{comment.get_user_full_name}}</h3>
+                                            <div class="meta">{{ comment.created_at|date:"F d, Y "}} at {{comment.created_at|date:"h:i a"}}</div>
+                                            <p>{{comment.comment}}</p>
+                                            <p><a href="#write-comment" class="reply">Reply</a></p>
+                                        </div>
+                                        </li>
+                                        {% endfor%}
+                                    </ul>
+
                         </li>
                         {% endfor %}
                         <!-- <li class="comment">
@@ -132,21 +156,7 @@
                                     </div>
 
 
-                                    <ul class="children">
-                                        <li class="comment">
-                                            <div class="vcard bio">
-                                                <img src="{%static 'images/person_1.jpg'%}" alt="Image placeholder">
-                                            </div>
-                                            <div class="comment-body">
-                                                <h3>John Doe</h3>
-                                                <div class="meta">October 03, 2018 at 2:21pm</div>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur
-                                                    quidem laborum necessitatibus, ipsam impedit vitae autem, eum
-                                                    officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum
-                                                    impedit necessitatibus, nihil?</p>
-                                                <p><a href="#" class="reply">Reply</a></p>
-                                            </div>
-
+                                    
                                             <ul class="children">
                                                 <li class="comment">
                                                     <div class="vcard bio">
@@ -185,7 +195,7 @@
                     </ul>
                     <!-- END comment-list -->
 
-                    <div class="comment-form-wrap pt-5">
+                    <div id="write-comment" class="comment-form-wrap pt-5">
 
                         {% if user.is_authenticated %}
 
@@ -209,6 +219,7 @@
                                 <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
                             </div> -->
                             {% csrf_token %}
+                            <input type="hidden" name="reply_comment">
                             <div class="form-group">
                                 {{form}}
                             </div>
@@ -322,5 +333,19 @@
         </div>
     </div>
 </section>
+
+
+
+<!-- reply button -->
+<script>
+    var elements = document.getElementsByClassName('reply');
+    for (let i=0; i<elements.length; i++){
+        elements[i].addEventListener('click', function(){
+            var comment_id = elements[i].getAttribute('comment-id');
+            //console.log('clicked ' + comment_id)
+            document.getElementsByName('reply_comment')[0].setAttribute('value', comment_id);
+        });
+    }
+</script>
 
 {% endblock content %}

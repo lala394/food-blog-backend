@@ -103,6 +103,7 @@ class RecipeDetailView(FormMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object =self.get_object()
+        self.replied_comment = request.POST.get('reply_comment')
         form= self.get_form()
 
         if form.is_valid():
@@ -114,6 +115,9 @@ class RecipeDetailView(FormMixin, DetailView):
         comment = form.save(commit=False)
         comment.user = self.request.user
         comment.recipe = self.object
+        if not self.replied_comment is None and self.replied_comment.isdigit():
+            r_comment = Comment.objects.get(id=int(self.replied_comment))
+            comment.reply_comment = r_comment
         comment.save()
         self.success_url = reverse_lazy('stories:single', kwargs = 
         {'pk': self.object.id })

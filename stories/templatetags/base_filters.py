@@ -1,6 +1,6 @@
 from django import template
 from string import capwords
-from stories.models import NavLinks, Category
+from stories.models import NavLinks, Category, Comment
 
 register = template.Library()
 
@@ -23,4 +23,9 @@ def custom_text_edit (value, mode):
 @register.simple_tag
 def get_categories():
     return Category.objects.all()
+
+
+@register.simple_tag
+def get_comments():
+    return Comment.objects.filter(reply_comment__isnull=True)
 

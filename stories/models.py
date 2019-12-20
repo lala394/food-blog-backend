@@ -84,7 +84,7 @@ class Recipe(models.Model):
     # logs
     updated_at = models.DateField(auto_now = True)
 
-    def __sts__(self):
+    def __str__(self):
         return self.title
 
     class Meta:

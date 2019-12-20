@@ -91,12 +91,13 @@
                     </div>
                 </div>
 
-
                 <div class="pt-5 mt-5">
-                    <h3 class="mb-5">6 Comments</h3>
+                    {% get_comments recipe_data.id as comments %}
+                    {% if comments %}
+                    <h3 class="mb-5">{{recipe_data.comments.count}} Comments</h3>
+                  
                     <ul class="comment-list">
-                        {% get_comments as comments %}
-                        
+                    
                         {% for comment in comments %}
                         <li class="comment">
                             <div class="vcard bio">
@@ -126,7 +127,9 @@
                                     </ul>
 
                         </li>
+       
                         {% endfor %}
+                        {% endif %}
                         <!-- <li class="comment">
                             <div class="vcard bio">
                                 <img src="{%static 'images/person_1.jpg'%}" alt="Image placeholder">
@@ -245,12 +248,15 @@
                 <div class="sidebar-box ftco-animate">
                     <ul class="categories">
                         <h3 class="heading mb-4">Categories</h3>
-                        <li><a href="#">Travel <span>(12)</span></a></li>
-                        <li><a href="#">Tour <span>(22)</span></a></li>
+                        {% get_categories as categories %}
+                        {% for category in categories %}
+                        <li><a href="#">{{category.title}} <span>{{ category.recipes.count }}</span></a></li>
+                        <!-- <li><a href="#">Tour <span>(22)</span></a></li>
                         <li><a href="#">Destination <span>(37)</span></a></li>
                         <li><a href="#">Drinks <span>(42)</span></a></li>
                         <li><a href="#">Foods <span>(14)</span></a></li>
-                        <li><a href="#">Travel <span>(140)</span></a></li>
+                        <li><a href="#">Travel <span>(140)</span></a></li> -->
+                        {% endfor %}
                     </ul>
                 </div>
 

@@ -150,6 +150,7 @@ USE_TZ = True
 
 LOGIN_URL = reverse_lazy('account:login')
 LOGIN_REDIRECT_URL = reverse_lazy('stories:home')
+LOGOUT_REDIRECT_URL = reverse_lazy('stories:home')
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')

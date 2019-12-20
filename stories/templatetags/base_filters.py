@@ -26,6 +26,6 @@ def get_categories():
 
 
 @register.simple_tag
-def get_comments():
-    return Comment.objects.filter(reply_comment__isnull=True)
+def get_comments(recipe_id):
+    return Comment.objects.filter(recipe=recipe_id, reply_comment__isnull=True)
 

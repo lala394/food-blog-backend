@@ -1,16 +1,28 @@
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
-from .forms import CustomLoginForm, CustomRegisterForm
+from .forms import CustomLoginForm, CustomRegisterForm, CustomChangePasswordForm
 from django.views.generic import CreateView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-
 User = get_user_model()
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
+
+
+
 
 # Create your views here.
 
 def change_password(request):
     return render(request, 'change_password.html')
+
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'change_password.html'
+    form_class = CustomChangePasswordForm
+    success_url = reverse_lazy('accounts:password_change_done')
+
+class ChangePasswordDone(PasswordChangeDoneView):
+    template_name = 'password_change_done.html'
+
 
 def forget_password(request):
     return render(request, 'forget_password.html')

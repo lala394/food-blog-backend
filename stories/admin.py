@@ -26,7 +26,7 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
-    fields = ('title','image', 'description', 'category',)
+    fields = ('title','image', 'description', 'category', 'owner')
     list_display = ('title', 'category',)
     list_filter = ('created_at',)
     search_fields = ('title',)

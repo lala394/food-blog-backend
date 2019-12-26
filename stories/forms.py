@@ -1,5 +1,5 @@
 from django import forms
-from .models import Contact, Comment
+from .models import Contact, Comment, Story, Category, User
 
 # class ContactForm(forms.Form):
 #     first_name = forms.CharField(max_length = 20)
@@ -43,3 +43,45 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['comment',]
+
+class EditUserForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Username'
+    }))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'First name'
+    }))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Last name'
+    }))
+    email = forms.CharField(widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Email'
+    }))
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email']
+
+
+
+class StoryForm(forms.ModelForm):
+    title = forms.CharField(label='', widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Title'
+    }), max_length=50)
+    description = forms.CharField(label='', widget=forms.Textarea(attrs={
+        'class': 'form-control',
+        'placeholder': 'Description'
+    }))
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.Select(attrs={
+        'class': 'form-control',
+        # 'placeholder': ''
+    }))
+
+    class Meta:
+        model = Story
+        fields = ['title', 'description', 'category', 'image',]

@@ -45,11 +45,11 @@ class Story(models.Model):
     image = models.ImageField(upload_to='stories', blank=False, null=True)
     description = models.TextField(blank=False)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, related_name='stories', null=True)
-
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stories', default=1)
     # logs
     updated_at = models.DateField(auto_now = True)
 
-    def __sts__(self):
+    def __str__(self):
         return self.title
 
     class Meta:

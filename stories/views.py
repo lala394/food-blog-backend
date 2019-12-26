@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, UpdateView
 from django.views.generic import TemplateView, CreateView, ListView, DetailView
 from .forms import *
 from stories.models import *
@@ -52,8 +52,20 @@ class ContactView(CreateView):
     form_class = ContactForm
     success_url = reverse_lazy('stories:contact')  #this stories represents namespace from urls.py
 
-def create_story(request):
-    return render(request, 'stories/create_story.html')
+# def create_story(request):
+#     return render(request, 'stories/create_story.html')
+
+class CreateStoryView(CreateView):
+    model = Story
+    form_class = StoryForm
+    template_name = 'stories/create_story.html'
+
+    def form_valid(self, form):
+        story = form.save(commit=False)
+        story.owner = self.request.user
+        story.save()
+        self.success_url = reverse_lazy('stories:user-profile', kwargs={'pk': self.request.user.id})
+        return super().form_valid(form)
 
 def home(request):
     return render(request, 'stories/index.html')
@@ -136,3 +148,16 @@ class StoriesView(ListView):
 
 def user_profile(request):
     return render(request, 'stories/user_profile.html')
+
+class UserProfileView(DetailView):
+    model = User
+    template_name = 'stories/user-profile.html'
+
+
+class UserEditView(UpdateView):
+    model = User
+    template_name = 'stories/user-edit.html'
+    form_class = EditUserForm
+
+    def get_success_url(self):
+        return reverse_lazy('stories:user-profile', kwargs={'pk': self.object.pk})

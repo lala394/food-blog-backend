@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.forms import UsernameField
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
 
 User = get_user_model()
 
@@ -71,3 +71,19 @@ class CustomChangePasswordForm(PasswordChangeForm):
             'new_password1',
             'new_password2',
         ]
+
+class CustomResetPasswordForm(PasswordResetForm):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder' : 'E-mail',
+    }), max_length=254)
+
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(widget = forms.PasswordInput(attrs={
+    'class':'form-control',
+    'placeholder': 'New Password'
+    }))
+    new_password2 = forms.CharField(widget = forms.PasswordInput(attrs={
+    'class':'form-control',
+    'placeholder': 'Confirm New Password'
+    }))

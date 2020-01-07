@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('stories.urls', namespace = 'stories')),
     path('account/', include ('accounts.urls', namespace='accounts')),
     path('djrichtextfield/', include('djrichtextfield.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

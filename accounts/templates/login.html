@@ -1,7 +1,12 @@
 {% extends 'base/index.html' %}
 {% load static %}
-{% block content %}
+{% load socialaccount %}
 
+{% block css %}
+    <link rel="stylesheet" href="http:////netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+{% endblock %}
+
+{% block content %}
 <section class="ftco-section contact-section register">
         <div class="container">
             <div class="row block-9 justify-content-center">
@@ -26,14 +31,14 @@
 
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn btn-primary py-3 px-5">
-                            <a href="#" class="forgot-password">Forgot password?</a>
+                            <a href="/account/reset-password/" class="forgot-password">Forgot password?</a>
                         </div>
                         <div class="form-group">
                             <a href="/account/register" class="">Don't have an account? Sign up</a>
                         </div>
 			<div class="form-group center">
-                            <a href="#" class="social"><i class="fa fa-facebook social-login fb-color"></i></a>
-                            <a href="#" class="social"><i class="fa fa-google-plus social-login google-color"></i></a>
+                            <a href="{% provider_login_url 'facebook' %}" class="social"><i class="fa fa-facebook social-login fb-color"></i></a>
+                            <a href="{% provider_login_url 'google' %}" class="social"><i class="fa fa-google-plus social-login google-color"></i></a>
                         </div>
                     </form>
 

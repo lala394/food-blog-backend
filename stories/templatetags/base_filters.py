@@ -1,6 +1,7 @@
 from django import template
 from string import capwords
 from stories.models import NavLinks, Category, Comment
+from stories.forms import SubscriberForm
 
 register = template.Library()
 
@@ -28,4 +29,8 @@ def get_categories():
 @register.simple_tag
 def get_comments(recipe_id):
     return Comment.objects.filter(recipe=recipe_id, reply_comment__isnull=True)
+
+@register.simple_tag
+def get_subscriber_form():
+    return SubscriberForm()
 

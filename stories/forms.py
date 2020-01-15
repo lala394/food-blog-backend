@@ -1,5 +1,5 @@
 from django import forms
-from .models import Contact, Comment, Story, Category, User
+from .models import Contact, Comment, Story, Category, User, Subscriber
 
 # class ContactForm(forms.Form):
 #     first_name = forms.CharField(max_length = 20)
@@ -85,3 +85,12 @@ class StoryForm(forms.ModelForm):
     class Meta:
         model = Story
         fields = ['title', 'description', 'category', 'image',]
+
+class SubscriberForm(forms.ModelForm):
+    email = forms.EmailField(label='', widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter email address'
+    }))
+    class Meta:
+        model = Subscriber 
+        fields = ['email']

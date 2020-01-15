@@ -19,5 +19,6 @@ urlpatterns = [
     path('stories/', StoriesView.as_view(), name='stories'),
     path('user-profile/<int:pk>/', UserProfileView.as_view(), name='user-profile'),
     path('user-edit/<int:pk>/', UserEditView.as_view(), name='user-edit'), 
+    path('subscribe/', SubscriberView.as_view(), name='subscribe'),
+    path('api/', include('stories.api.urls')),
 ]
-

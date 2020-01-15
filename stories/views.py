@@ -111,6 +111,12 @@ class RecipeDetailView(FormMixin, DetailView):
     template_name = "stories/single.html"
     context_object_name = "recipe_data"
     form_class = CommentForm
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.view_count = obj.view_count + 1
+        obj.save()
+        return obj
     
 
     def post(self, request, *args, **kwargs):
@@ -161,3 +167,9 @@ class UserEditView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('stories:user-profile', kwargs={'pk': self.object.pk})
+
+class SubscriberView(CreateView):
+    model = Subscriber
+    form_class = SubscriberForm
+    success_url = reverse_lazy('stories:home')
+    http_method_names = ('post',)
